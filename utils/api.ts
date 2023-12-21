@@ -6,7 +6,7 @@ import axios from "@/libs/axios"
 const baseUrl = process.env.apiUrl;
 
 export const getAllTodos = async (): Promise<ITask[]> => {
-  const { data } = await axios.get('todo');
+  const { data } = await axios.get(`${baseUrl}/todo`);
 
   return data;
 }
