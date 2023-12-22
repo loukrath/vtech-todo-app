@@ -69,9 +69,9 @@ export default function Home() {
           Vtech Todo List
         </h1>
 
-        <div className='flex space-x-5'>
-          <SearchTask submitted={searchTask} />
+        <div className='space-y-3'>
           <AddTaskBtn submitted={addNewTasks} />
+          <SearchTask submitted={searchTask} />
         </div>
         
 

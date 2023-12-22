@@ -57,7 +57,7 @@ const AddTaskBtn: React.FC<AddTaskProps> = ({ submitted }) => {
 
   return (
     <div>
-      <button onClick={() => setModalOpen(true)} className="btn btn-primary text-white uppercase">
+      <button onClick={() => setModalOpen(true)} className="btn btn-primary text-white uppercase w-full">
         Add new
         <AiOutlinePlus className='ml-1' size={16} />
       </button>
