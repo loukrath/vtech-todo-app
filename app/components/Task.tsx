@@ -72,7 +72,8 @@ const Task: React.FC<TaskProps> = ({ task, setModalEditOpen, setModalDeleteOpen 
           <FiEdit
             onClick={() => setModalEditOpen(true, task.id)}
             cursor="pointer"
-            className="text-blue-500" size={25} />
+            className="text-blue-500" size={25}
+          />
 
           <FiTrash2
             onClick={() => setModalDeleteOpen(true, task.id)}

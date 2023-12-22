@@ -14,16 +14,15 @@ import Conditional from "@/app/components/bases/Conditional";
 
 
 interface TodoListProps {
-  tasks: ITask[]
+  tasks: ITask[],
+  onDeletedTask: (id: string) => void
 }
 
 type Inputs = {
   todo: string
 }
 
-const TodoListTable: React.FC<TodoListProps> = ({ tasks }) => {
-  const router = useRouter();
-
+const TodoListTable: React.FC<TodoListProps> = ({ tasks, onDeletedTask }) => {
   const [isLoadingUpdate, setIsLoadingUpdate] = useState<boolean>(false)
   const [isShowEditModal, setIsShowEditModal] = useState<boolean>(false)
   const [isShowDeleteModal, setIsShowDeleteModal] = useState<boolean>(false)
@@ -38,15 +37,11 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks }) => {
     reset,
     formState: { errors },
     setValue
-  } = useForm<Inputs>({
+  } = useForm<ITask>({
     defaultValues: {
       todo: '',
     }
   })
-
-  useEffect(() => {
-    console.log('page.tsx')
-  },[])
 
   /**
    * Functions
@@ -71,7 +66,6 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks }) => {
         setIsShowEditModal(false)
         reset();
         setAlertError('')
-        router.refresh()
       }
     } catch (error) {
       const { response } = error as any;
@@ -93,8 +87,8 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks }) => {
 
       await deleteTask(idTaskToDelete)
 
+      onDeletedTask(idTaskToDelete)
       setIsShowDeleteModal(false)
-      router.refresh()
     } catch (error) {
       console.log('error', error)
     } finally {
@@ -199,7 +193,6 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks }) => {
         </div>
       </Modal>
     </>
-    
   )
 }
 

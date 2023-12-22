@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 
-import { getAllTodos } from '@/utils/api'
+import { getAllTodos, updateTask } from '@/utils/api'
 import AddTaskBtn from '@/app/components/bases/AddTaskBtn'
 import TodoList from '@/app/components/TodoList'
 import SearchTask from '@/app/components/SearchTask'
@@ -20,6 +20,12 @@ export default function Home() {
   const addNewTasks = useCallback((item: ITask) => {
     setTasks((prev: ITask[]) => [...prev, item]);
   },[]);
+
+  const onDeletedTask = useCallback(async(id: string) => {
+    // Remove task from state by id
+    const newTasks = tasks.filter(task => task.id !== id)
+    setTasks(newTasks)
+  },[tasks]);
 
   const searchTask = useCallback(async (keyword: string) => {
     const rawTasks = await getAllTodos(keyword);
@@ -47,7 +53,7 @@ export default function Home() {
           <AddTaskBtn submitted={addNewTasks} />
         </div>
         
-        <TodoList tasks={tasks} />
+        <TodoList tasks={tasks} onDeletedTask={onDeletedTask} />
       </div>
     </main>
   ),[tasks, addNewTasks]);

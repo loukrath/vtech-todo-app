@@ -12,7 +12,11 @@ import Modal from '@/app/components/bases/Modal'
 import Conditional from "@/app/components/bases/Conditional";
 import { ITask } from '@/types/tasks';
 
-const AddTaskBtn = ({ submitted }: { submitted?: (item: ITask) => void }) => {
+interface AddTaskProps {
+  submitted: (item: ITask) => void
+}
+
+const AddTaskBtn: React.FC<AddTaskProps> = ({ submitted }) => {
   const router = useRouter();
   const [isShowModal, setModalOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
