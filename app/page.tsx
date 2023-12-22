@@ -2,19 +2,28 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
+import { FaRegFolderClosed } from "react-icons/fa6";
 
 import { getAllTodos, updateTask } from '@/utils/api'
 import AddTaskBtn from '@/app/components/bases/AddTaskBtn'
 import TodoList from '@/app/components/TodoList'
 import SearchTask from '@/app/components/SearchTask'
 import { ITask } from '@/types/tasks'
+import Conditional from "@/app/components/bases/Conditional";
+import THeadTodoList from "@/app/components/THeadTodoList";
 
 export default function Home() {
   const [tasks, setTasks] = useState<ITask[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   
   const getTasks = useCallback(async () => {
+    setIsLoading(true)
+
     const rawTasks = await getAllTodos();
+    
     setTasks(rawTasks)
+    
+    setIsLoading(false)
   },[])
 
   const addNewTasks = useCallback((item: ITask) => {
@@ -65,15 +74,60 @@ export default function Home() {
           <AddTaskBtn submitted={addNewTasks} />
         </div>
         
-        <TodoList
-          tasks={tasks}
-          onDeletedTask={onDeletedTask}
-          onUpdateStatus={onUpdateStatus}
-        />
+
+        <Conditional showWhen={isLoading}>
+          <div className="bg-white mt-5 rounded-lg">
+            <div className="overflow-x-auto">
+              <table className="table text-black">
+                <THeadTodoList />
+
+                <tbody>
+                  <tr className='border-b-0'>
+                    <td colSpan={3} className='text-center py-5'>
+                      <div className="flex justify-center items-center">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </Conditional>
+
+        <Conditional showWhen={!isLoading && tasks.length === 0}>
+          <div className="bg-white mt-5 rounded-lg">
+            <div className="overflow-x-auto">
+              <table className="table text-black">
+                <THeadTodoList />
+
+                <tbody>
+                  <tr className='border-b-0'>
+                    <td colSpan={3} className='text-center py-5'>
+                      <div className="flex flex-col justify-center items-center">
+                        <FaRegFolderClosed className='text-5xl text-gray-400 mb-3' />
+                        <p className='text-gray-400'>No data</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </Conditional>
+
+        <Conditional showWhen={!isLoading && tasks.length > 0}>
+          <TodoList
+            tasks={tasks}
+            onDeletedTask={onDeletedTask}
+            onUpdateStatus={onUpdateStatus}
+          />
+        </Conditional>
       </div>
     </main>
   ),[
     tasks,
+    isLoading,
     addNewTasks,
     onDeletedTask,
     onUpdateStatus,

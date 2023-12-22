@@ -1,7 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import React, { useState } from "react"
 import { PiWarningLight } from "react-icons/pi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,6 +10,7 @@ import Task from "@/app/components/Task"
 import Modal from "@/app/components/bases/Modal"
 import { updateTask, deleteTask } from "@/utils/api"
 import Conditional from "@/app/components/bases/Conditional";
+import THeadTodoList from "@/app/components/THeadTodoList";
 
 
 interface TodoListProps {
@@ -97,31 +97,12 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks, onDeletedTask, onUpdate
     }
   }
 
-  const sumittedStatus = (task: ITask) => {
-    // const newTasks = tasks.map(item => {
-    //   if (item.id === task.id) {
-    //     item = task
-    //   }
-    //   return item
-    // })
-
-    // setTasks(newTasks)
-
-    console.log('task', task)
-  }
-
   return (
     <>
       <div className="bg-white mt-5 rounded-lg">
         <div className="overflow-x-auto">
           <table className="table text-black">
-            <thead>
-              <tr className="border-b-0 bg-gray-200 text-black">
-                <th>TODO</th>
-                <th className="text-center">Status</th>
-                <th>ACTION</th>
-              </tr>
-            </thead>
+            <THeadTodoList />
             <tbody>
               { 
                 tasks.map((task) => 
