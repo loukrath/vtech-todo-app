@@ -7,16 +7,19 @@ import { getAllTodos } from '@/utils/api'
 import AddTaskBtn from '@/app/components/bases/AddTaskBtn'
 import TodoList from '@/app/components/TodoList'
 import SearchTask from '@/app/components/SearchTask'
+import { ITask } from '@/types/tasks'
 
 export default function Home() {
-
-  const [tasks, setTasks] = useState<any>([]);
+  const [tasks, setTasks] = useState<ITask[]>([]);
   
-
   const getTasks = useCallback(async () => {
     const rawTasks = await getAllTodos();
     setTasks(rawTasks)
   },[])
+
+  const addNewTasks = useCallback((item: ITask) => {
+    setTasks((prev: ITask[]) => [...prev, item]);
+  },[]);
 
   useEffect(() => {
     getTasks();
@@ -35,11 +38,11 @@ export default function Home() {
 
         <div className='flex space-x-5'>
           <SearchTask />
-          <AddTaskBtn />
+          <AddTaskBtn submitted={addNewTasks} />
         </div>
         
         <TodoList tasks={tasks} />
       </div>
     </main>
-  ),[tasks]);
+  ),[tasks, addNewTasks]);
 }

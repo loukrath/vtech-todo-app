@@ -140,13 +140,6 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks }) => {
           </h3>
 
           <div className='modal-action'>
-            {/* <input
-              value={taskToEdit.todo}
-              onChange={(e) => setTaskToEdit({ ...taskToEdit, todo: e.target.value })}
-              type="text"
-              placeholder="New task"
-              className="input input-bordered w-full max-w-full text-black bg-white"
-            /> */}
             <div className='flex flex-col w-full space-y-2'>
               <input
                 className="input input-bordered w-full max-w-full text-black bg-white"

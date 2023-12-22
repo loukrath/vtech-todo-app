@@ -10,12 +10,9 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { addNewTask } from '@/utils/api'
 import Modal from '@/app/components/bases/Modal'
 import Conditional from "@/app/components/bases/Conditional";
+import { ITask } from '@/types/tasks';
 
-type Inputs = {
-  todo: string
-}
-
-const AddTaskBtn = () => {
+const AddTaskBtn = ({ submitted }: { submitted?: (item: ITask) => void }) => {
   const router = useRouter();
   const [isShowModal, setModalOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -26,13 +23,13 @@ const AddTaskBtn = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<ITask>({
     defaultValues: {
       todo: '',
     }
   })
 
-  const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+  const onSubmit: SubmitHandler<ITask> = async (data: ITask) => {
     try {
       setIsLoading(true)
       const resp = await addNewTask(data)
@@ -42,6 +39,8 @@ const AddTaskBtn = () => {
         reset();
         router.refresh()
         setAlertError('')
+
+        submitted?.(data)
       }
     } catch (error) {
       const { response } = error as any;
