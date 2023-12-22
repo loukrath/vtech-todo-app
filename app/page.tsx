@@ -27,6 +27,18 @@ export default function Home() {
     setTasks(newTasks)
   },[tasks]);
 
+  const onUpdateStatus = useCallback(async (task: ITask) => {
+    const newTasks = tasks.map((item: ITask) => {
+      if (item.id === task.id) {
+        item.isCompleted = task.isCompleted
+      }
+
+      return item
+    })
+
+    setTasks(newTasks)
+  },[tasks]);
+
   const searchTask = useCallback(async (keyword: string) => {
     const rawTasks = await getAllTodos(keyword);
 
@@ -53,8 +65,18 @@ export default function Home() {
           <AddTaskBtn submitted={addNewTasks} />
         </div>
         
-        <TodoList tasks={tasks} onDeletedTask={onDeletedTask} />
+        <TodoList
+          tasks={tasks}
+          onDeletedTask={onDeletedTask}
+          onUpdateStatus={onUpdateStatus}
+        />
       </div>
     </main>
-  ),[tasks, addNewTasks]);
+  ),[
+    tasks,
+    addNewTasks,
+    onDeletedTask,
+    onUpdateStatus,
+    searchTask
+  ]);
 }

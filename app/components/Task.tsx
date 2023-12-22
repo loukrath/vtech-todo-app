@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { useRouter } from "next/navigation";
 
 import { ITask } from "@/types/tasks";
 import { updateTask } from '@/utils/api'
@@ -12,17 +11,16 @@ interface TaskProps {
   task: ITask,
   setModalEditOpen: (open: boolean, id: string) => boolean | void,
   setModalDeleteOpen: (open: boolean, id: string) => boolean | void,
+  sumittedStatus: (task: ITask) => void
 }
 
-const Task: React.FC<TaskProps> = ({ task, setModalEditOpen, setModalDeleteOpen }) => {
+const Task: React.FC<TaskProps> = ({ task, setModalEditOpen, setModalDeleteOpen, sumittedStatus }) => {
   // Booleans
   const [isLoadingUpdate, setIsLoadingUpdate] = useState<boolean>(false)
 
   /**
    * Functions
    */
-  const router = useRouter();
-
   const handleUpdateTaskStatus = async () => {
     try {
       setIsLoadingUpdate(true)
@@ -34,8 +32,7 @@ const Task: React.FC<TaskProps> = ({ task, setModalEditOpen, setModalDeleteOpen 
       }
   
       await updateTask(newTask)
-  
-      router.refresh()
+      sumittedStatus(newTask)
     } catch (error) {
       console.log('error', error)
     } finally {

@@ -44,7 +44,7 @@ const AddTaskBtn: React.FC<AddTaskProps> = ({ submitted }) => {
         router.refresh()
         setAlertError('')
 
-        submitted?.(data)
+        submitted?.({...data, id: resp.data.id})
       }
     } catch (error) {
       const { response } = error as any;

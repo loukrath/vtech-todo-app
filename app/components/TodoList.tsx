@@ -15,14 +15,15 @@ import Conditional from "@/app/components/bases/Conditional";
 
 interface TodoListProps {
   tasks: ITask[],
-  onDeletedTask: (id: string) => void
+  onDeletedTask: (id: string) => void,
+  onUpdateStatus: (task: ITask) => void
 }
 
 type Inputs = {
   todo: string
 }
 
-const TodoListTable: React.FC<TodoListProps> = ({ tasks, onDeletedTask }) => {
+const TodoListTable: React.FC<TodoListProps> = ({ tasks, onDeletedTask, onUpdateStatus }) => {
   const [isLoadingUpdate, setIsLoadingUpdate] = useState<boolean>(false)
   const [isShowEditModal, setIsShowEditModal] = useState<boolean>(false)
   const [isShowDeleteModal, setIsShowDeleteModal] = useState<boolean>(false)
@@ -96,6 +97,19 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks, onDeletedTask }) => {
     }
   }
 
+  const sumittedStatus = (task: ITask) => {
+    // const newTasks = tasks.map(item => {
+    //   if (item.id === task.id) {
+    //     item = task
+    //   }
+    //   return item
+    // })
+
+    // setTasks(newTasks)
+
+    console.log('task', task)
+  }
+
   return (
     <>
       <div className="bg-white mt-5 rounded-lg">
@@ -116,6 +130,7 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks, onDeletedTask }) => {
                     task={task}
                     setModalEditOpen={(isOpen, id) => handleOpenEditModal(isOpen, id)}
                     setModalDeleteOpen={(isOpen, id) => handleOpenDeleteModal(isOpen, id)}
+                    sumittedStatus={onUpdateStatus}
                   />)
               }
             </tbody>
