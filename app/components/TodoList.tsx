@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { PiWarningLight } from "react-icons/pi";
 import { IoMdCloseCircle } from "react-icons/io";
@@ -43,6 +43,10 @@ const TodoListTable: React.FC<TodoListProps> = ({ tasks }) => {
       todo: '',
     }
   })
+
+  useEffect(() => {
+    console.log('page.tsx')
+  },[])
 
   /**
    * Functions
