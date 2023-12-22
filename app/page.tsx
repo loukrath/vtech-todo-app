@@ -1,4 +1,6 @@
-import { useState } from 'react'
+'use client'
+
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 
 import { getAllTodos } from '@/utils/api'
@@ -6,10 +8,21 @@ import AddTaskBtn from '@/app/components/bases/AddTaskBtn'
 import TodoList from '@/app/components/TodoList'
 import SearchTask from '@/app/components/SearchTask'
 
-export default async function Home() {
-  const tasks = await getAllTodos();
+export default function Home() {
 
-  return (
+  const [tasks, setTasks] = useState<any>([]);
+  
+
+  const getTasks = useCallback(async () => {
+    const rawTasks = await getAllTodos();
+    setTasks(rawTasks)
+  },[])
+
+  useEffect(() => {
+    getTasks();
+  },[getTasks]);
+
+  return useMemo(() => (
     <main className='p-5'>
       <div className='container mx-auto'>
         <div className='mb-5'>
@@ -28,5 +41,5 @@ export default async function Home() {
         <TodoList tasks={tasks} />
       </div>
     </main>
-  )
+  ),[tasks]);
 }

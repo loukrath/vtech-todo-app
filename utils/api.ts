@@ -3,7 +3,8 @@ import { AxiosResponse } from "axios";
 import { ITask } from "@/types/tasks";
 import axios from "@/libs/axios"
 
-const baseUrl = process.env.apiUrl;
+// const baseUrl = process.env.apiUrl;
+const baseUrl = 'https://api.todo.livecmt.com/api';
 
 export const getAllTodos = async (): Promise<ITask[]> => {
   const { data } = await axios.get(`${baseUrl}/todo`);
