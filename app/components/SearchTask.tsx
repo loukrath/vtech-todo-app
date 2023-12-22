@@ -1,40 +1,25 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 
-const SearchTask = () => {
+const SearchTask = ({ submitted }: { submitted?: (keyword: string) => void }) => {
   const [searchVal, setSearchVal] = useState<string>('')
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
 
-  useEffect(() => {
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-    }
-  }, [timeoutId])
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
 
     setSearchVal(value)
 
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-    }
+    if (timeoutId) clearTimeout(timeoutId)
 
-    setTimeoutId(
-      setTimeout(() => {
-        handleSearch()
-      }, 3000)
-    )
-  }
+    setTimeoutId(setTimeout(() => {
+      submitted?.(value)
+    }, 500))
+  }, [submitted, timeoutId])
 
-  const handleSearch = () => {
-    console.log('handleSearch: ', searchVal)
-  }
 
-  return (
+  return useMemo (() => (
     <input
       value={searchVal}
       type="text"
@@ -42,7 +27,7 @@ const SearchTask = () => {
       className="input input-bordered w-full bg-white text-black flex-1"
       onChange={handleChange}
     />
-  )
+  ),[searchVal, handleChange]);
 }
 
 export default SearchTask

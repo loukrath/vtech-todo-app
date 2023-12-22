@@ -21,6 +21,12 @@ export default function Home() {
     setTasks((prev: ITask[]) => [...prev, item]);
   },[]);
 
+  const searchTask = useCallback(async (keyword: string) => {
+    const rawTasks = await getAllTodos(keyword);
+
+    setTasks(rawTasks)
+  },[]);
+
   useEffect(() => {
     getTasks();
   },[getTasks]);
@@ -37,7 +43,7 @@ export default function Home() {
         </h1>
 
         <div className='flex space-x-5'>
-          <SearchTask />
+          <SearchTask submitted={searchTask} />
           <AddTaskBtn submitted={addNewTasks} />
         </div>
         

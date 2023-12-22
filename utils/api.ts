@@ -5,8 +5,12 @@ import axios from "@/libs/axios"
 
 const baseUrl = process.env.apiUrl;
 
-export const getAllTodos = async (): Promise<ITask[]> => {
-  const { data } = await axios.get(`${baseUrl}/todo`);
+export const getAllTodos = async (keyword? : string): Promise<ITask[]> => {
+  const { data } = await axios.get(`${baseUrl}/todo`, {
+    params: {
+      keyword
+    }
+  });
 
   return data;
 }
