@@ -43,7 +43,7 @@ const Task: React.FC<TaskProps> = ({ task, setModalEditOpen, setModalDeleteOpen,
   return (
     <>
       <tr key={task.id} className="border-b-gray-200 group">
-        <td>{task.todo}</td>
+        <td className={task.isCompleted ? "line-through" : ""}>{task.todo}</td>
         <td className="text-center">
           <Conditional showWhen={task.isCompleted}>
             <button
